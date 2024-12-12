@@ -1,7 +1,10 @@
 package com.sparta.reviewsystem.dto;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 public class ResponseDto {
 
     private Long id;

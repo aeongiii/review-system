@@ -1,10 +1,13 @@
 package com.sparta.reviewsystem.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Review",
         // productId와 userId의 조합이 중복되지 않도록 unique 걸어주기. 필수는 아님
@@ -27,8 +30,11 @@ public class Review {
     private String content;
 
     @Column(nullable = false)
+    private Float userScore;
+
+    @Column(nullable = false)
     // 그냥 객체 생성될때 들어가도 될 것 같다. 리뷰 수정할 일 없으니까
-    private LocalDateTime createAt = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column // null 가능
     private String imageUrl;
