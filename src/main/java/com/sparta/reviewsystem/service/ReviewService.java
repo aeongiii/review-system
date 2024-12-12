@@ -83,14 +83,28 @@ public class ReviewService {
         productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다. productId : " + productId));
 
+        // 총 리뷰 평균 계산
+        List<Review> allReview = reviewRepository.findByProductId(productId);
+        float averageScore = (float) allReview.stream()
+                .mapToDouble(Review::getUserScore)
+                .average()
+                .orElse(0.0);
+//        System.out.println("averageScore = " + averageScore);
+
+        // 전체 리뷰 수 계산
+        Long totalReviewCount = reviewRepository.countByProductId(productId);
+//        System.out.println("totalReviewCount = " + totalReviewCount);
+
         // 2. 페이징 설정
         Pageable pageable = PageRequest.of(0, size); // 0번부터 size까지의 페이지 정보 반환
         Slice<Review> reviewSlice;
 
         if (cursor == 0) { // 첫페이지 불러올 경우 최신순 정렬한 뒤 첫페이지 가져오기
-            reviewSlice = reviewRepository.findByProduct_IdOrderByCreatedAtDesc(productId, pageable);
+            reviewSlice = reviewRepository.findByProduct_IdOrderByCreatedAtDesc(
+                    productId, pageable);
         } else { // 첫페이지 아닌 경우 cursor 값 기준으로 다음 페이지 가져오기
-            reviewSlice = reviewRepository.findByProduct_IdAndCreatedAtBeforeOrderByCreatedAtDesc(productId, cursor, pageable);
+            reviewSlice = reviewRepository.findByProduct_IdAndCreatedAtBeforeOrderByCreatedAtDesc(
+                    productId, cursor, pageable);
         }
 
         // 반환된 reviewSlice를 ReviewResponseDto 리스트로 바꾸기
@@ -104,18 +118,7 @@ public class ReviewService {
                         review.getImageUrl(),
                         review.getCreatedAt()
                 )).toList();
-
-
-        List<Review> allReview = reviewRepository.findByProductId(productId);
-
-        // 총 리뷰 수 계산
-        int totalReviewCount =allReview.size();
-
-        // 총 리뷰 평균 계산
-        float averageScore = (float) allReview.stream()
-                .mapToDouble(Review::getUserScore)
-                .average()
-                .orElse(0.0);
+//        System.out.println("reviewResponses.size() = " + reviewResponses.size());
 
         // 다음 값 있으면 nextCursor 값 반환
         Long nextCursor = reviewSlice.hasNext() ? reviewResponses.get(reviewResponses.size() -1).getId() : null;

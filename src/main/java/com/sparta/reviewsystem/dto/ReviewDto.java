@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ReviewDto {
 
-    private int totalCount;
+    private Long totalCount;
 
     private float score;
 
@@ -19,7 +19,7 @@ public class ReviewDto {
 
     private List<ReviewResponseDto> reviews;
 
-    public ReviewDto(int totalCount, float score, Long cursor, List<ReviewResponseDto> reviews) {
+    public ReviewDto(Long totalCount, float score, Long cursor, List<ReviewResponseDto> reviews) {
         this.totalCount = totalCount;
         this.score = score;
         this.cursor = cursor;
