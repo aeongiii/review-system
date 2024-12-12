@@ -18,8 +18,8 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    // 리뷰 등록 - POST  /products/{productId}/reviews
-    @PostMapping(value = "/{productId}/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    // 리뷰 등록 - POST                              contents-type이 "application/json" ,"multipart/form-data"가 아닌 요청은 처리하지 않는다.
+    @PostMapping(value = "/{productId}/reviews", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> createReview(
             @PathVariable Long productId,
             @RequestPart("requestDto") RequestDto requestDto,
