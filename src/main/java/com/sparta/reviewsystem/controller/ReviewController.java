@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/products")
 public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
@@ -42,7 +42,7 @@ public class ReviewController {
     @GetMapping("/{productId}/reviews")
     public ResponseEntity<ReviewDto> getReview(
             @PathVariable Long productId,
-            @RequestParam (value = "cursor") Long cursor,
+            @RequestParam (value = "cursor", defaultValue = "0") Long cursor,
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
 

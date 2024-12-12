@@ -22,8 +22,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                                                        Pageable pageable);
 
     // cursor != 0일때. 기존 cursor값을 이용해서 다음 페이지 가져옴
-    Slice<Review> findByProduct_IdAndCreatedAtBeforeOrderByCreatedAtDesc(
-            Long productId, Long createdAt, Pageable pageable);
+    Slice<Review> findByProduct_IdAndIdLessThanOrderByCreatedAtDesc(
+            Long productId, Long cursor, Pageable pageable);
 
     // 총 리뷰 수 계산
     Long countByProductId(Long productId);

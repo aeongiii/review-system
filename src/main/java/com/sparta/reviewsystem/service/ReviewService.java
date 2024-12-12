@@ -103,7 +103,7 @@ public class ReviewService {
             reviewSlice = reviewRepository.findByProduct_IdOrderByCreatedAtDesc(
                     productId, pageable);
         } else { // 첫페이지 아닌 경우 cursor 값 기준으로 다음 페이지 가져오기
-            reviewSlice = reviewRepository.findByProduct_IdAndCreatedAtBeforeOrderByCreatedAtDesc(
+            reviewSlice = reviewRepository.findByProduct_IdAndIdLessThanOrderByCreatedAtDesc(
                     productId, cursor, pageable);
         }
 
@@ -124,7 +124,7 @@ public class ReviewService {
         Long nextCursor = reviewSlice.hasNext() ? reviewResponses.get(reviewResponses.size() -1).getId() : null;
 
         // 반환할 값 만들기
-        ReviewDto reviewDto = new ReviewDto (totalReviewCount, (float) averageScore, nextCursor, reviewResponses);
+        ReviewDto reviewDto = new ReviewDto (totalReviewCount, averageScore, nextCursor, reviewResponses);
 
 
         return reviewDto;
