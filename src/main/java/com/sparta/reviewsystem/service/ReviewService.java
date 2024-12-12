@@ -5,6 +5,9 @@ import com.sparta.reviewsystem.dto.ReviewDto;
 import com.sparta.reviewsystem.dto.ReviewResponseDto;
 import com.sparta.reviewsystem.entity.Product;
 import com.sparta.reviewsystem.entity.Review;
+import com.sparta.reviewsystem.exception.BadRequestException;
+import com.sparta.reviewsystem.exception.InternalServerException;
+import com.sparta.reviewsystem.exception.ProductNotFoundException;
 import com.sparta.reviewsystem.repository.ProductRepository;
 import com.sparta.reviewsystem.repository.ReviewRepository;
 import org.springframework.data.domain.PageRequest;
@@ -37,12 +40,21 @@ public class ReviewService {
 
         // 리뷰 중복체크
         if (reviewRepository.existsByProductIdAndUserId(productId, requestDto.getUserId())) {
-            throw new IllegalArgumentException("이미 리뷰를 작성했습니다.");
+            throw new BadRequestException("이미 리뷰를 작성했습니다.");
+        }
+
+        // 점수는 1~5점 사이여야 함
+        if (requestDto.getScore() < 1 || requestDto.getScore() > 5) {
+            throw new BadRequestException("점수는 1점에서 5점 사이여야 합니다.");
         }
 
         // 리뷰 저장
         Review review = buildReview(product, requestDto, imageUrl);
-        reviewRepository.save(review);
+        try {
+            reviewRepository.save(review);
+        } catch (Exception ex) { // 서버에만 로그 띄움
+            throw new InternalServerException("리뷰 저장 중 서버 오류가 발생했습니다.");
+        }
 
         // 총 리뷰개수 +1
         product.setReviewCount(product.getReviewCount() + 1);
@@ -80,7 +92,7 @@ public class ReviewService {
     // 리뷰 등록 전에 해당 상품이 있는지 확인
     private Product findProductById(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다. productId : " + productId));
+                .orElseThrow(() -> new ProductNotFoundException("상품이 존재하지 않습니다. productId : " + productId));
     }
 
     // 리뷰 저장

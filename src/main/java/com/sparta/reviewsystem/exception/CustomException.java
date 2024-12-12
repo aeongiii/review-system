@@ -1,0 +1,19 @@
+package com.sparta.reviewsystem.exception;
+
+import org.springframework.http.HttpStatus;
+
+// 부모 클래스 생성
+public class CustomException extends RuntimeException {
+
+
+    private final HttpStatus status;
+
+    public CustomException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
+}

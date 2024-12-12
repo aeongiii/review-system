@@ -1,0 +1,36 @@
+package com.sparta.reviewsystem.exception;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    // 400 에러 처리
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> handleBadRequestException(BadRequestException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
+    }
+
+    // 400 에러 처리 - 상품을 찾을 수 없을 때
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException ex) {
+        return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
+    }
+
+
+    // 500 에러 처리
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity<String> handleInternalServerException(InternalServerException ex) {
+        // 서버 내부에서만 사용
+        System.err.println("InternalServerException 발생: " + ex.getMessage());
+        return ResponseEntity.status(ex.getStatus()).build(); // 상태 코드만 반환
+    }
+
+    // 기타 예외 처리
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex) {
+        return ResponseEntity.status(500).body("알 수 없는 오류가 발생했습니다.");
+    }
+}
