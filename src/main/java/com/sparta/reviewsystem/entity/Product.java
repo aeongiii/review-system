@@ -2,12 +2,14 @@ package com.sparta.reviewsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "product")
+@NoArgsConstructor
 public class Product {
 
     @Id

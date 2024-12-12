@@ -2,6 +2,7 @@ package com.sparta.reviewsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "Review",
         // productId와 userId의 조합이 중복되지 않도록 unique 걸어주기. 필수는 아님
         uniqueConstraints = @UniqueConstraint(name="uniqueReview", columnNames = {"productId", "userId"}))
+@NoArgsConstructor
 public class Review {
 
     @Id
