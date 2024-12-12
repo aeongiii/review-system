@@ -3,6 +3,7 @@ package com.sparta.reviewsystem.controller;
 import com.sparta.reviewsystem.dto.RequestDto;
 import com.sparta.reviewsystem.dto.ReviewDto;
 import com.sparta.reviewsystem.service.ReviewService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,7 @@ public class ReviewController {
     }
 
     // 리뷰 등록 - POST  /products/{productId}/reviews
-    @PostMapping("/{productId}/reviews")
+    @PostMapping(value = "/{productId}/reviews", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createReview(
             @PathVariable Long productId,
             @RequestPart("requestDto") RequestDto requestDto,

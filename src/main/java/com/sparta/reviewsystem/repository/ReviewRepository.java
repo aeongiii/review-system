@@ -1,11 +1,9 @@
 package com.sparta.reviewsystem.repository;
 
 import com.sparta.reviewsystem.entity.Review;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,9 +18,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByProductId(Long productId);
 
     // cursor == 0일때, 해당 상품에 대한 리뷰 내림차순 정렬하고 첫번째 페이지 가져옴
-    Slice<Review> findReviewsTopByProductIdOrderByCreatedAtDesc(Long productId,
-                                                                Pageable pageable);
+    Slice<Review> findByProduct_IdOrderByCreatedAtDesc(Long productId,
+                                                       Pageable pageable);
 
     // cursor != 0일때. 기존 cursor값을 이용해서 다음 페이지 가져옴
-    Slice<Review> findReviewNextPage(Long cursor, Long productId, Pageable pageable);
+    Slice<Review> findByProduct_IdAndCreatedAtBeforeOrderByCreatedAtDesc(
+            Long productId, Long createdAt, Pageable pageable);
 }
