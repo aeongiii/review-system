@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class Review {
 
     @ManyToOne // 하나의 상품에 여러개의 리뷰가 달릴 수 있음.
     // FK의 경우 사용할 컬럼 이름을 name에 넣는다.
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn (name = "product_id", nullable = false)
     private Product product; // 사실상 객체를 참조한다.
 
     @Column(nullable = false)
@@ -35,11 +36,18 @@ public class Review {
     @Column(nullable = false)
     private Float userScore;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    @Column(nullable = false)
-    // 그냥 객체 생성될때 들어가도 될 것 같다. 리뷰 수정할 일 없으니까
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP(3)")
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @Column // null 가능
     private String imageUrl;
+
+    @PrePersist
+    public void setDefaultCreatedAt() {
+        if (this.createdAt == null) {
+            // 나노초 설정
+            this.createdAt = OffsetDateTime.now(ZoneOffset.UTC).withNano(0);
+        }
+    }
 }

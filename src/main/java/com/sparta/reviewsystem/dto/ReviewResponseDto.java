@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -20,13 +20,13 @@ public class ReviewResponseDto {
 
     private String imageUrl;
 
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
 
     public ReviewResponseDto(
             Long id, Long userId,
             Float score, String content,
-            String imageUrl, LocalDateTime createdAt) {
+            String imageUrl, OffsetDateTime  createdAt) {
         this.id = id;
         this.userId = userId;
         this.score = score;
