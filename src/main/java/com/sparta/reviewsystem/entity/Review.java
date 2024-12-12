@@ -1,5 +1,6 @@
 package com.sparta.reviewsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "Review",
+@Table(name = "review",
         // productId와 userId의 조합이 중복되지 않도록 unique 걸어주기. 필수는 아님
         uniqueConstraints = @UniqueConstraint(name="uniqueReview", columnNames = {"productId", "userId"}))
 @NoArgsConstructor
@@ -34,6 +35,7 @@ public class Review {
     @Column(nullable = false)
     private Float userScore;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @Column(nullable = false)
     // 그냥 객체 생성될때 들어가도 될 것 같다. 리뷰 수정할 일 없으니까
     private LocalDateTime createdAt = LocalDateTime.now();
