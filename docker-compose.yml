@@ -24,10 +24,10 @@
         SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
         SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       ports:
-        - "8080:8080"
-      depends_on:
-        mysql:
-          condition: service_healthy
+        - "8082:8080"
+#      depends_on:
+#        mysql:
+#          condition: service_healthy
 
   volumes:
     mysql_data:
