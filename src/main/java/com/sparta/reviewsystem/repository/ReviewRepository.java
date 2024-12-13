@@ -17,11 +17,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 해당 상품에 대한 모든 리뷰 반환
     List<Review> findByProductId(Long productId);
 
-    // cursor == 0일때, 해당 상품에 대한 리뷰 내림차순 정렬하고 첫번째 페이지 가져옴
+    // 인덱스 사용, cursor == 0일때, 해당 상품에 대한 리뷰 내림차순 정렬하고 첫번째 페이지 가져옴
     Slice<Review> findByProduct_IdOrderByCreatedAtDesc(Long productId,
                                                        Pageable pageable);
 
-    // cursor != 0일때. 기존 cursor값을 이용해서 다음 페이지 가져옴
+    // 인덱스 사용, cursor != 0일때. 기존 cursor값을 이용해서 다음 페이지 가져옴
     Slice<Review> findByProduct_IdAndIdLessThanOrderByCreatedAtDesc(
             Long productId, Long cursor, Pageable pageable);
 
