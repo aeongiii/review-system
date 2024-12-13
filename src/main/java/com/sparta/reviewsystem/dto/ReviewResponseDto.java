@@ -35,4 +35,8 @@ public class ReviewResponseDto {
         this.createdAt = createdAt;
     }
 
+    // 실제 값은 float이지만 반환할때는 int로 반환되도록 한다.
+    public int getScore() {
+        return score.intValue();
+    }
 }
