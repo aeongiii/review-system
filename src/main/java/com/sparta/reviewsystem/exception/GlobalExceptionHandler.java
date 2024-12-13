@@ -1,5 +1,7 @@
 package com.sparta.reviewsystem.exception;
 
+import jakarta.persistence.OptimisticLockException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +19,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException ex) {
         return ResponseEntity.status(ex.getStatus()).body(ex.getMessage());
+    }
+
+    // 409 에러 처리 - 낙관적 락 버전 충돌 시
+    @ExceptionHandler(OptimisticLockException.class)
+    public ResponseEntity<String> handleOptimisticLockException(OptimisticLockException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("해당 상품의 정보가 변경되어 요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.");
     }
 
 

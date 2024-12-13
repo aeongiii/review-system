@@ -22,6 +22,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version // 낙관적 락 사용 - 버전 명시
+    private int version;
+
     @ManyToOne // 하나의 상품에 여러개의 리뷰가 달릴 수 있음.
     // FK의 경우 사용할 컬럼 이름을 name에 넣는다.
     @JoinColumn (name = "product_id", nullable = false)
