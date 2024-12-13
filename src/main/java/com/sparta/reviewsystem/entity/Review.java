@@ -49,7 +49,7 @@ public class Review {
     @PrePersist
     public void setDefaultCreatedAt() {
         if (this.createdAt == null) {
-            // 나노초 설정
+            // 밀리초 설정
             this.createdAt = OffsetDateTime.now(ZoneOffset.UTC).withNano(0);
         }
     }
