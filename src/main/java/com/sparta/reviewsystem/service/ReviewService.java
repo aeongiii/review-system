@@ -7,6 +7,7 @@ import com.sparta.reviewsystem.entity.Product;
 import com.sparta.reviewsystem.entity.Review;
 import com.sparta.reviewsystem.exception.BadRequestException;
 import com.sparta.reviewsystem.exception.InternalServerException;
+import com.sparta.reviewsystem.exception.InvalidPageSizeException;
 import com.sparta.reviewsystem.exception.ProductNotFoundException;
 import com.sparta.reviewsystem.repository.ProductRepository;
 import com.sparta.reviewsystem.repository.ReviewRepository;
@@ -147,6 +148,19 @@ public class ReviewService {
         return reviews.isEmpty() ? 0 : reviews.get(reviews.size() - 1).getId();
     }
 
+    // 페이지 size 유효성 검사 - 컨트롤러에서 써야하니까 public
+    public void validatePageSize(Long productId, int size) {
+        long totalReviews = reviewRepository.countByProductId(productId);
 
+        if (size <= 0) { // 0 이하일때
+            throw new InvalidPageSizeException("size는 1 이상이어야 합니다.");
+        }
+
+        if (size > totalReviews) { // 총 리뷰 수보다 큰 값일때
+            throw new InvalidPageSizeException(
+                    String.format("size는 총 리뷰 수를 넘을 수 없습니다. 리뷰 총 개수 : " + totalReviews)
+            );
+        }
+    }
 
 }

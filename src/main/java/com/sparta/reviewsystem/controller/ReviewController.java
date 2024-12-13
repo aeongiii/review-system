@@ -46,8 +46,10 @@ public class ReviewController {
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
 
+        // 페이지 크기 유효성 검사
+        reviewService.validatePageSize(productId, size);
+        // 서비스 호출
         ReviewDto reviewDto = reviewService.getReview(productId, cursor, size);
-
 
         return ResponseEntity.ok(reviewDto); // 상태코드 200 + dto의 json 반환
     }

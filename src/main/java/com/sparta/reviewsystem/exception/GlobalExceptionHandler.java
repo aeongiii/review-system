@@ -37,6 +37,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus()).build(); // 상태 코드만 반환
     }
 
+    // 페이지 사이즈가 적절하지 않을 때
+    @ExceptionHandler(InvalidPageSizeException.class)
+    public ResponseEntity<String> handleInvalidPageSizeException(InvalidPageSizeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     // 기타 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
