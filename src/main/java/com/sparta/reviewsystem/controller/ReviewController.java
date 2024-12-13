@@ -46,8 +46,12 @@ public class ReviewController {
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
 
+        // product id 유효성 검사 (상품 존재하는지)
+        reviewService.findProductById(productId);
+
         // 페이지 크기 유효성 검사
         reviewService.validatePageSize(productId, size);
+
         // 서비스 호출
         ReviewDto reviewDto = reviewService.getReview(productId, cursor, size);
 

@@ -36,7 +36,7 @@ public class ReviewService {
     @Transactional
     public void createReview(Long productId, RequestDto requestDto, String imageUrl) {
 
-        // 상품이 존재하는지 확인
+        // 상품 가져오기
         Product product = findProductById(productId);
 
         // 리뷰 중복체크
@@ -91,7 +91,7 @@ public class ReviewService {
 
 
     // 리뷰 등록 전에 해당 상품이 있는지 확인
-    private Product findProductById(Long productId) {
+    public Product findProductById(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("상품이 존재하지 않습니다. productId : " + productId));
     }
